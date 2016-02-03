@@ -1,13 +1,22 @@
 github学习笔记
 
-一、安装git
-安装完成后，还需要最后一步设置，在命令行输入：
+一、初次使用git的设置
+
+（1）设置用户信息，在命令行输入：
 $ git config --global user.name "huimincheng"
 $ git config --global user.email "huimincheng2015@gmail.com"
+查看就是git config user.name
+
+（2）文本编辑器
+git config --global core.editor emacs
+(3)最后检查配置信息
+git config --list
+
 
 二、创建版本库
-（1）初始化一个Git仓库，使用git init命令。
-mkdir learngit
+（1）如果想跟踪现在所在的文件夹内容，就必须初始化。让git跟踪到它的信息
+初始化一个Git仓库，使用git init命令,。
+mkdir learngit   #题外话：新建一个文件夹是mkdir file ;那么新建某某文件，且某某文件里的内容是XXXX是：echo 'XXXX' > file
  cd learngit
  pwd
  git init  #通过git init命令把这个目录变成Git可以管理的仓库：
@@ -19,6 +28,15 @@ mkdir learngit
 $ git add file1.txt
 $ git add file2.txt file3.txt
 $ git commit -m "add 3 files."
+
+第三步，查看状态：
+$ git status -s
+ M README  #  修改过的文件前面有 M 标记， README 文件在工作区被修改了但是还没有将修改后的文件放入暂存区
+MM Rakefile  #出现在右边的 M 表示该文件被修改了但是还没放入暂存区，出现在靠左边的 M 表示该文件被修改了并放入了暂存区，
+              #Rakefile 在工作区被修改并提交到暂存区后又在工作区中被修改了，所以在暂存区和工作区都有该文件被修改了的记录。
+A  lib/git.rb  #新添加到暂存区中的文件前面有 A 标记
+M  lib/simplegit.rb #lib/simplegit.rb 文件被修改了并将修改后的文件放入了暂存区
+?? LICENSE.txt  #新添加的未跟踪文件前面有 ?? 标记，
  
  三、时光机穿梭，
  （1）要随时掌握工作区的状态，使用git status命令。
@@ -38,7 +56,7 @@ git reset --hard HEAD^
 场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
 git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
 
-场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+场景2：当你不但改乱了工作区某个文件的内容，还add到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
 
 场景3：针对已经commit的修改，但是又想反悔，git的世界里总有后悔药可以吃！
 已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有push到远程库。
@@ -50,6 +68,10 @@ git checkout其实是用版本库里的版本替换工作区的版本，无论�
 2.从工作区中删除文件
 rm file
 
+3.想在工作区修改某个已经add的文件
+git mv A B即可
+$  git mv readme.txt README1
+
 四、远程仓库
 1.SSHkeys
 详情参见https://help.github.com/articles/generating-an-ssh-key/
@@ -59,6 +81,16 @@ git remote add origin git@github.com:Huimincheng2015/learngit.git
 git push origin branch(push 哪个分支就写什么)
 4.pull
 
+5.添加远程仓库
+git add name URL
+$ git remote add pb https://github.com/paulboone/ticgit
+$ git remote -v
+origin	https://github.com/schacon/ticgit (fetch)
+origin	https://github.com/schacon/ticgit (push)
+pb	https://github.com/paulboone/ticgit (fetch)
+pb	https://github.com/paulboone/ticgit (push)
+
+接下来，可以用pb 来代替整个 URL
 
 五、分支管理
 （1）popular command
@@ -89,6 +121,12 @@ $git log --graph --pretty=oneline --abbrev-commit
 当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，
 再git stash pop，回到工作现场，恢复的同时把stash内容也删了。
 
+（3）显示分支的变化
+ $ git log --pretty=format:"%h %s" --graph
+ 1.查看合并了的分支
+ git branch --merged
+ git branch --no-merged
+
 六、配置别名
 git config --global alias.lg ""
 举例如下：
@@ -101,6 +139,11 @@ $ git lg
 自己拥有Fork后的仓库的读写权限；
 
 可以推送pull request给官方仓库来贡献代码。
+
+八、如何在某库中新建文件夹并推送
+首先关联，再推送
+
+
 
 
 
